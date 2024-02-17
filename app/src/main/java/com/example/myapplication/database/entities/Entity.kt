@@ -2,6 +2,8 @@ package com.example.myapplication.database.entities
 
 import com.example.myapplication.R
 
+
+//-----ignore these classes-----
 data class CarouselContentList(
     val movieImage: Int,
     val movieName: String,
