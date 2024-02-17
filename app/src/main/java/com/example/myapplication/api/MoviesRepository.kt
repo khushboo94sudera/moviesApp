@@ -28,7 +28,7 @@ private fun MovieApiResponse.Result.toMoviesEntity():MoviesEntity {
     return MoviesEntity(
          id = this.id,
         title = this.title,
-        //genreIds = this.genreIds,
+        genreIds = this.genreIds,
         posterPath = this.posterPath,
         overview = this.overview
     )
