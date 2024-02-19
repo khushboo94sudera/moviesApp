@@ -97,7 +97,7 @@ fun OutlinedContentButtonWithIcon(name:String, icon:Int) {
 }
 
 @Composable
-fun FilledContentButton(name:String, navigate:()->Unit) {
+fun FilledContentButton(name:String, navigate:()->Unit = {}) {
     Button(
         onClick = { navigate() },
         modifier = Modifier

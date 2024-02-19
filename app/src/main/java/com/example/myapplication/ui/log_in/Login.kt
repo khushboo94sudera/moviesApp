@@ -27,7 +27,6 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 fun Login(
     navigateToMenu:()->Unit
 ) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()

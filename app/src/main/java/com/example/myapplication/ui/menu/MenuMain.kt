@@ -4,6 +4,7 @@ import android.widget.ScrollView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MenuMain(
-    viewModel:MenuViewModel = koinViewModel()
+    viewModel:MenuViewModel = koinViewModel(),
+    navigationCallback:(String)->Unit
 ) {
     val movies by viewModel.movies.collectAsState(emptyList())
     Box(
@@ -71,7 +73,7 @@ fun MenuMain(
                 Spacer(modifier = Modifier.height(16.dp))
                 SmallHeadingText(name = "Highlighted")
                 Spacer(modifier = Modifier.height(16.dp))
-                HorizontalCarousel(movies)
+                HorizontalCarousel(movieList = movies, navigationCallback = navigationCallback)
                 Spacer(modifier = Modifier.height(8.dp))
                 SmallHeadingText(name = "Other Shows")
             }
@@ -81,48 +83,34 @@ fun MenuMain(
                 horizontalAlignment = Alignment.Start,
             ){
                 Spacer(modifier = Modifier.height(8.dp))
-                OtherShowCard(movies)
+                OtherShowCard(movieList = movies, navigationCallback = navigationCallback)
             }
         }
     }
 }
-
-
 @Composable
-fun OtherShowCard(movieList: List<MoviesEntity>) {
+fun OtherShowCard(movieList: List<MoviesEntity>, navigationCallback:(String)->Unit) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(space = 18.dp),
         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
     ) {
         items(movieList){ item ->
-            CardContent(cardList = item)
+            CardContent(cardList = item, navigationCallback)
         }
     }
 }
-
 @Composable
-fun CardContent(cardList: MoviesEntity) {
+fun CardContent(cardList: MoviesEntity, navigationCallback:(String)->Unit) {
     Card(
         modifier = Modifier
-            //.background(color = Color.White)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { navigationCallback(cardList.id) },
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ){
         Column {
-            /*cardList.selectedBandList.firstOrNull()
-                ?.let { painterResource(id = it.movieImage) }?.let {
-                    Image(
-                        painter = it,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .size(width = 148.dp, height = 164.dp)
-                    )
-                }*/
             AsyncImage(
-                model = cardList.posterPath,
+                model = "https://image.tmdb.org/t/p/w500/"+ cardList.posterPath,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -130,13 +118,7 @@ fun CardContent(cardList: MoviesEntity) {
                     .size(width = 148.dp, height = 164.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
-            /*cardList.selectedBandList.firstOrNull()?.let {
-                Text(
-                    text = it.movieName,
-                    style = MaterialTheme.typography.titleMedium.copy(fontStyle = FontStyle.Italic),
-                    modifier = Modifier
-                )
-            }*/
+
             Text(
                 text = cardList.title ?: "TITLE",
                 style = MaterialTheme.typography.titleMedium.copy(fontStyle = FontStyle.Italic),
@@ -161,7 +143,7 @@ fun CardContent(cardList: MoviesEntity) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalCarousel(movieList: List<MoviesEntity>) {
+fun HorizontalCarousel(movieList: List<MoviesEntity>, navigationCallback:(String)->Unit) {
     val pagerState = rememberPagerState(pageCount = { movieList.size})
     Box(
         modifier = Modifier
@@ -179,24 +161,20 @@ fun HorizontalCarousel(movieList: List<MoviesEntity>) {
             pageSize = PageSize.Fill
         ){index->
             Box(
-                modifier = Modifier.background(
-                    color = Color.Black,
-                    shape = RoundedCornerShape(12.dp)
+                modifier = Modifier
+
+                    .background(
+                        color = Color.Black,
+                        shape = RoundedCornerShape(12.dp)
                 )
             ){
                 AsyncImage(
-                    model = movieList[index].posterPath,
+                    model = "https://image.tmdb.org/t/p/w500/"+ movieList[index].posterPath,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
-                /*mage(
-                    painter = painterResource(id = carouselList[index].movieImage),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                )*/
+
             }
 
         }

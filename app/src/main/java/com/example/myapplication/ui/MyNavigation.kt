@@ -17,8 +17,9 @@ import com.example.myapplication.ui.log_in.Login
 import com.example.myapplication.ui.menu.MenuMain
 import com.example.myapplication.ui.profile.Profile
 import com.example.myapplication.ui.reusable_content.MyBottomNavigationBar
-import com.example.myapplication.ui.search_category.SearchCategory
-import com.example.myapplication.ui.search_screen.SearchScreen
+import com.example.myapplication.ui.search_category_2.SearchCategory
+import com.example.myapplication.ui.search_screen_1.SearchScreen
+import com.example.myapplication.ui.show.ShowContent
 import com.example.myapplication.ui.show_ticket_details.ShowTicketDetails
 import com.example.myapplication.ui.sign_up.SignUp
 import com.example.myapplication.ui.tickets.Tickets
@@ -75,7 +76,19 @@ fun MyNavigation() {
                 SignUp()
             }
             composable("menu"){
-                MenuMain()
+                MenuMain{navigationId->
+                    navController.navigate("showContent/$navigationId")
+                }
+            }
+            composable(
+                route = "showContent/{movie_id}",
+                arguments = listOf(
+                    navArgument("movie_id"){
+                        type = NavType.StringType
+                    }
+                )
+            ){
+                ShowContent()
             }
             composable(route = "tickets") {
                 Tickets { navigationId ->
@@ -83,7 +96,7 @@ fun MyNavigation() {
                 }
             }
             composable(
-                route = "show_ticket_details/{navigationId}",
+                route = "show_ticket_details/{ticket_id}",
                 arguments = listOf(
                     navArgument("navigationId") {
                         type = NavType.StringType

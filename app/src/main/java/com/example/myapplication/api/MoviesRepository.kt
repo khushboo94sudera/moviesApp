@@ -9,18 +9,21 @@ class MoviesRepository(
     private val myApplicationApiClient: MyApplicationApiClient = MyApplicationApiClient(),
     private val moviesDao: MoviesDao
 ) {
-    suspend fun getMoviesList(page: Int):MovieApiResponse{
+    suspend fun getMoviesList(page: Int){
         val response = myApplicationApiClient.getMovies(pageNumber = page)
         response.results.map {
             it.toMoviesEntity()
         }.run {
             moviesDao.insertMovies(this)
         }
-        return response
     }
 
     fun flowMovies():Flow<List<MoviesEntity>>{
         return moviesDao.flowMovies()
+    }
+
+    suspend fun getMovie(id:String):MoviesEntity?{
+        return moviesDao.getMovie(id = id)
     }
 }
 
@@ -28,7 +31,7 @@ private fun MovieApiResponse.Result.toMoviesEntity():MoviesEntity {
     return MoviesEntity(
          id = this.id,
         title = this.title,
-        genreIds = this.genreIds,
+        //genreIds = this.genreIds,
         posterPath = this.posterPath,
         overview = this.overview
     )

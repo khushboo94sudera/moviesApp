@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.api.MoviesRepository
 import com.example.myapplication.database.entities.MoviesEntity
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,9 @@ class MenuViewModel(
     val movies = MutableStateFlow<List<MoviesEntity>>(emptyList())
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+        }) {
             withContext(Dispatchers.IO){
                 moviesRepository.getMoviesList(page = 1)
             }
