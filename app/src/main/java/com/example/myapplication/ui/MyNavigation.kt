@@ -88,7 +88,7 @@ fun MyNavigation() {
                     }
                 )
             ){
-                ShowContent()
+                ShowContent(navigationCallback = { navController.popBackStack() })
             }
             composable(route = "tickets") {
                 Tickets { navigationId ->
@@ -103,7 +103,7 @@ fun MyNavigation() {
                     },
                 ),
             ){
-                ShowTicketDetails()
+                ShowTicketDetails(navigationCallBack = { navController.popBackStack() })
             }
             composable("search"){
                 SearchScreen()

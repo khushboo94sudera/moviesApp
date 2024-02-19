@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -40,19 +41,22 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-fun IconBack() {
+fun IconBack(navigationCallback:()->Unit) {
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(shape = RoundedCornerShape(24.dp))
             .background(color = Color.Black),
     ){
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = null,
-            modifier = Modifier.align(Alignment.Center),
-            tint = Color(0xffA21313)
-        )
+        IconButton(onClick = {navigationCallback()} ){
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.Center),
+                tint = Color(0xffA21313)
+            )
+        }
+
     }
 }
 

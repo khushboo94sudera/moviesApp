@@ -9,14 +9,14 @@ class GenresRepository(
     private val myApplicationApiClient: MyApplicationApiClient = MyApplicationApiClient(),
     private val genresDao: GenresDao
 ) {
-    suspend fun getGenresList():GenresApiResponse{
+    suspend fun getGenresList(){
         val response = myApplicationApiClient.getGenres()
         response.genres.map {
             it.toGenresEntity()
         }.run {
             genresDao.insertGenres(this)
         }
-        return response
+
     }
 
     fun flowGenres(): Flow<List<GenresEntity>>{

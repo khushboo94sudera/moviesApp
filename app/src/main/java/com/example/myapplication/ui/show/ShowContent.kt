@@ -44,7 +44,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ShowContent(
-    viewModel: ShowContentViewModel = koinViewModel()
+    viewModel: ShowContentViewModel = koinViewModel(),
+    navigationCallback:()->Unit
 ) {
     val movie by viewModel.movieState.collectAsState()
     Scaffold {
@@ -82,14 +83,14 @@ fun ShowContent(
                 horizontalAlignment = Alignment.Start
             ) {
                 Spacer(modifier = Modifier.height(76.dp))
-                IconBack()
-                /*Image(
+                IconBack(navigationCallback = navigationCallback)
+                Image(
                     painter = painterResource(id = R.drawable.pic_10),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .size(width = 270.dp, height = 216.dp)
-                )*/
+                )
                 Spacer(modifier = Modifier.height(32.dp))
                 Row (
                     verticalAlignment = Alignment.CenterVertically,

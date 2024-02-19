@@ -42,10 +42,13 @@ class MyApplicationApiClient(
     }
 
     suspend fun getGenres(): GenresApiResponse {
-        return httpClient.get {
+        val response = httpClient.get {
             url(GENRES_LIST)
+            header("Authorization", "Bearer $ACCESS_TOKEN")
+            parameter("apiKey", API_KEY)
         }
-            .body<GenresApiResponse>()
+            response.bodyAsText()
+            return response.body<GenresApiResponse>()
     }
 
 }

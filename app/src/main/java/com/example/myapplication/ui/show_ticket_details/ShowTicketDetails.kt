@@ -32,7 +32,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.reusable_content.IconBack
 
 @Composable
-fun ShowTicketDetails() {
+fun ShowTicketDetails(navigationCallBack:()->Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,7 +61,7 @@ fun ShowTicketDetails() {
                 horizontalAlignment = Alignment.Start
             ) {
                 Spacer(modifier = Modifier.height(76.dp))
-                IconBack()
+                IconBack(navigationCallback = navigationCallBack)
                 //Spacer(modifier = Modifier.height(136.dp))
                 Image(
                     painter = painterResource(id = R.drawable.mask_1),

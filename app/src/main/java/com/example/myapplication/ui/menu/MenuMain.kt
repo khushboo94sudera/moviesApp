@@ -162,7 +162,7 @@ fun HorizontalCarousel(movieList: List<MoviesEntity>, navigationCallback:(String
         ){index->
             Box(
                 modifier = Modifier
-
+                    .clickable { navigationCallback(movieList[index].id) }
                     .background(
                         color = Color.Black,
                         shape = RoundedCornerShape(12.dp)
