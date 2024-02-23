@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.show_ticket_details
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -28,19 +31,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.database.entities.MoviesEntity
 import com.example.myapplication.ui.reusable_content.IconBack
+import org.koin.androidx.compose.koinViewModel
+import org.koin.dsl.koinApplication
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun ShowTicketDetails(navigationCallBack:()->Unit) {
+fun ShowTicketDetails(
+    viewModel: ShowTicketDetailsViewModel = koinViewModel(),
+    navigationCallBack:()->Unit
+) {
+    val movie by viewModel.movieState.collectAsState()
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 //.padding(it)
                 .background(color = Color.Black)
         ){
-            Image(
+            /*Image(
                 painter = painterResource(id = R.drawable.pic_16),
+                contentDescription = null,
+                modifier = Modifier.size(width = 390.dp, height = 522.dp),
+                contentScale = ContentScale.Crop
+            )*/
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500/" + movie.posterPath,
                 contentDescription = null,
                 modifier = Modifier.size(width = 390.dp, height = 522.dp),
                 contentScale = ContentScale.Crop
@@ -64,7 +82,7 @@ fun ShowTicketDetails(navigationCallBack:()->Unit) {
                 IconBack(navigationCallback = navigationCallBack)
                 //Spacer(modifier = Modifier.height(136.dp))
                 Image(
-                    painter = painterResource(id = R.drawable.mask_1),
+                    painter = painterResource(id = R.drawable.pic_10),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,11 +143,12 @@ fun ShowTicketDetails(navigationCallBack:()->Unit) {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Image(
+                        /*Image(
                             painter = painterResource(id = R.drawable.qr_code_1),
                             contentDescription = null,
                             modifier = Modifier.size(198.dp)
-                        )
+                        )*/
+
                     }
 
                 }
@@ -137,3 +156,4 @@ fun ShowTicketDetails(navigationCallBack:()->Unit) {
             }
         }
     }
+

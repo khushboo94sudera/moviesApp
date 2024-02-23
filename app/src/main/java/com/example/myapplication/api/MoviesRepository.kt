@@ -59,6 +59,10 @@ class MoviesRepository(
         return myTicketsDao.getTicketDao(movieId =movieId )!=null
     }
 
+     fun getTicketList(): Flow<List<MoviesEntity>>{
+        return moviesDao.getMoviesWithTickets()
+    }
+
 }
 
 private fun MovieApiResponse.Result.toMoviesEntity(): MoviesEntity {

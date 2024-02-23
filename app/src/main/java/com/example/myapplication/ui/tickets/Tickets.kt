@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,14 +32,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.myapplication.database.entities.MoviesEntity
 import com.example.myapplication.database.entities.Ticket
 import com.example.myapplication.database.entities.ticketList
 import com.example.myapplication.ui.reusable_content.HeadingText
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Tickets(
-    navigateToTicketDetails:(Int)->Unit
+    viewModel: TicketsViewModel = koinViewModel(),
+    navigateToTicketDetails:(String)->Unit
 ) {
+    val tickets by viewModel.ticketsState.collectAsState(emptyList())
+
         Box(
             modifier = Modifier
                 //.padding(it)
@@ -52,13 +60,13 @@ fun Tickets(
                 Spacer(modifier = Modifier.height(60.dp))
                 HeadingText(name = "My Tickets")
                 Spacer(modifier = Modifier.height(24.dp))
-                MyTicketsList(navigateToTicketDetails)
+                MyTicketsList(navigateToTicketDetails, ticketList = tickets)
             }
         }
     }
 
 @Composable
-fun MyTicketsList(navigateToTicketDetails:(Int)->Unit) {
+fun MyTicketsList(navigateToTicketDetails:(String)->Unit, ticketList: List<MoviesEntity>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(0.dp),
@@ -71,33 +79,39 @@ fun MyTicketsList(navigateToTicketDetails:(Int)->Unit) {
 }
 
 @Composable
-fun TicketCard(myList: Ticket, navigateToTicketDetails:(Int)->Unit) {
+fun TicketCard(myList: MoviesEntity, navigateToTicketDetails:(String)->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { navigateToTicketDetails(myList.ticketId) },
+            .clickable { navigateToTicketDetails(myList.id) },
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ) {
         Row {
             Box(){
-                Image(
+                /*Image(
                     painter = painterResource(id = myList.ticketImage),
                     contentDescription = null,
                     modifier = Modifier
                         .size(height = 196.dp, width = 140.dp)
+                )*/
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w500/" + myList.posterPath,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(height = 196.dp, width = 140.dp)
                 )
-                Image(
+                /*Image(
                     painter = painterResource(id = myList.ticketMaskImage),
                     contentDescription = null,
                     modifier = Modifier.size(height = 196.dp, width = 140.dp)
-                )
+                )*/
             }
             Column(
                 modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
             ) {
                 Text(
-                    text = myList.ticketName,
+                    text = myList.title?:"Title",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -107,7 +121,7 @@ fun TicketCard(myList: Ticket, navigateToTicketDetails:(Int)->Unit) {
                     color = Color.White
                 )
                 Text(
-                    text = myList.venue,
+                    text = "São Paulo, SP - Allianz Park",
                     style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.White
                 )
@@ -118,7 +132,7 @@ fun TicketCard(myList: Ticket, navigateToTicketDetails:(Int)->Unit) {
                     color = Color.White
                 )
                 Text(
-                    text = myList.showDate,
+                    text = "28/09/2023",
                     style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.White
                 )
@@ -129,7 +143,7 @@ fun TicketCard(myList: Ticket, navigateToTicketDetails:(Int)->Unit) {
                     color = Color.White
                 )
                 Text(
-                    text = myList.time,
+                    text = "21:00 (BRT)",
                     style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.White
                 )
@@ -141,7 +155,7 @@ fun TicketCard(myList: Ticket, navigateToTicketDetails:(Int)->Unit) {
                         color = Color.White
                     )
                     Text(
-                        text = myList.ticketPurchasedOn,
+                        text = "22/05/2023",
                         style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.SemiBold),
                         color = Color.White
                     )

@@ -115,4 +115,7 @@ dependencies {
     // Image Loading
     implementation(libs.coil.compose)
 
+    //QR Code
+
+
 }

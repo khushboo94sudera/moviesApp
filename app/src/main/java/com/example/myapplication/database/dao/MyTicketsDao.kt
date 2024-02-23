@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.myapplication.database.entities.MyTicketsEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MyTicketsDao {
@@ -12,5 +13,6 @@ interface MyTicketsDao {
 
     @Query("SELECT * FROM myTicketsTable WHERE movieId = :movieId")
     suspend fun getTicketDao(movieId: String): MyTicketsEntity?
+
 
 }
