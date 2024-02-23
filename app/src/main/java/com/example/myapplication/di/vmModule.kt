@@ -1,6 +1,7 @@
 package com.example.myapplication.di
 
 import com.example.myapplication.ui.menu.MenuViewModel
+import com.example.myapplication.ui.search_category_2.SearchCategoryViewModel
 import com.example.myapplication.ui.search_screen_1.SearchScreenViewModel
 import com.example.myapplication.ui.show.ShowContentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -15,5 +16,8 @@ val vmModule = module {
     }
     viewModel {
         ShowContentViewModel(get(),get())
+    }
+    viewModel {
+        SearchCategoryViewModel(get(),get())
     }
 }

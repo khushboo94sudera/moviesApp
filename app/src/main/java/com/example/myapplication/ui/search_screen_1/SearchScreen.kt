@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,14 +51,15 @@ import java.util.UUID
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchScreenViewModel = koinViewModel()
+    viewModel: SearchScreenViewModel = koinViewModel(),
+    navigationCallBack:(String)->Unit
 ) {
     val bands by viewModel.genres.collectAsState(emptyList())
-    SearchScreenWithState(bands)
+    SearchScreenWithState(bands = bands, navigationCallBack = navigationCallBack)
 }
 
 @Composable
-private fun SearchScreenWithState(bands: List<GenresEntity>) {
+private fun SearchScreenWithState(bands: List<GenresEntity>,navigationCallBack: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,35 +75,35 @@ private fun SearchScreenWithState(bands: List<GenresEntity>) {
             Spacer(modifier = Modifier.height(24.dp))
             MySearchBar()
             Spacer(modifier = Modifier.height(40.dp))
-            LazySearchCategories(bands)
+            LazySearchCategories(bandList = bands, navigationCallBack = navigationCallBack)
         }
     }
 }
 
 
 @Composable
-fun LazySearchCategories(bandList: List<GenresEntity>) {
+fun LazySearchCategories(bandList: List<GenresEntity>, navigationCallBack:(String)->Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = 24.dp),
         contentPadding = PaddingValues(0.dp)
     ) {
         items(bandList) { item ->
-            CategoryCard(bandList = item)
+            CategoryCard(bandList = item, navigationCallBack = navigationCallBack)
         }
     }
 }
 
 @Composable
-fun CategoryCard(bandList: GenresEntity) {
+fun CategoryCard(bandList: GenresEntity, navigationCallBack:(String)->Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = {navigationCallBack(bandList.id)}),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Image(
                 modifier = Modifier
-                    .height(200.dp)
+                    .height(100.dp)
                     .fillMaxWidth(),
                 painter = painterResource(id = R.drawable.title),
                 contentDescription = null,
@@ -198,7 +200,8 @@ fun PreviewSearchScreen() {
                     UUID.randomUUID().toString(),
                     UUID.randomUUID().toString()
                 )
-            )
+            ),
+            navigationCallBack = {}
         )
     }
 }

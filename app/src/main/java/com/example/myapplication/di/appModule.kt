@@ -6,12 +6,14 @@ import com.example.myapplication.api.MoviesRepository
 import com.example.myapplication.api.MyApplicationApiClient
 import com.example.myapplication.database.MyAppDatabase
 import com.example.myapplication.database.dao.GenresDao
+import com.example.myapplication.database.dao.MoviesByGenresDao
 import com.example.myapplication.database.dao.MoviesDao
+import com.example.myapplication.database.dao.MyTicketsDao
 import org.koin.dsl.module
 
 val appModule = module {
     single {
-        MoviesRepository(moviesDao = get(), myApplicationApiClient = get())
+        MoviesRepository(moviesDao = get(), myApplicationApiClient = get(), moviesByGenresDao = get(), myTicketsDao = get())
     }
     single {
         GenresRepository(genresDao = get(), myApplicationApiClient = get())
@@ -29,5 +31,11 @@ val appModule = module {
     }
     single<GenresDao> {
         get<MyAppDatabase>().genresDao()
+    }
+    single<MoviesByGenresDao> {
+        get<MyAppDatabase>().moviesByGenresDao()
+    }
+    single<MyTicketsDao> {
+        get<MyAppDatabase>().myTicketsDao()
     }
 }

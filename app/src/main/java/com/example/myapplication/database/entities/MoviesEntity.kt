@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class MoviesEntity(
     @PrimaryKey
     val id: String,
-    val genreIds: List<Int>? = null,
+    val genreIds: List<String>?= null,
     val title: String? = null,
     val posterPath: String? = null,
-    var overview: String? = null
+    val overview: String? = null
 )

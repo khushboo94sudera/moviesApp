@@ -17,4 +17,6 @@ interface MoviesDao {
 
     @Query(value = "SELECT * FROM moviesTable WHERE id = :id")
     suspend fun getMovie(id:String): MoviesEntity?
+
+
 }

@@ -45,24 +45,19 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ShowContent(
     viewModel: ShowContentViewModel = koinViewModel(),
-    navigationCallback:()->Unit
+    navigationCallback: () -> Unit
 ) {
     val movie by viewModel.movieState.collectAsState()
+    val isBought by viewModel.ticketState.collectAsState()
     Scaffold {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(color = Color.Black)
-        ){
-            /*Image(
-                painter = painterResource(id = R.drawable.pic_3),
-                contentDescription = null,
-                modifier = Modifier.size(width = 390.dp, height = 522.dp),
-                contentScale = ContentScale.Crop
-            )*/
+        ) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500/"+ movie.posterPath,
+                model = "https://image.tmdb.org/t/p/w500/" + movie.posterPath,
                 contentDescription = null,
                 modifier = Modifier.size(width = 390.dp, height = 522.dp),
                 contentScale = ContentScale.Crop
@@ -92,9 +87,9 @@ fun ShowContent(
                         .size(width = 270.dp, height = 216.dp)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
-                ){
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.icon_1),
                         contentDescription = null,
@@ -108,7 +103,7 @@ fun ShowContent(
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
@@ -126,7 +121,10 @@ fun ShowContent(
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
                     text = "About",
-                    style = MaterialTheme.typography.titleSmall.copy(color = Color.White,fontWeight = FontWeight.SemiBold),
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -147,10 +145,14 @@ fun ShowContent(
                     ) {
                         BasicTextField(
                             value = movie.overview ?: "Description",
-                            onValueChange = {  },
+                            //value = movie.genreIds?.firstOrNull()?.toString() ?: "Description",
+                            onValueChange = { },
                             modifier = Modifier
                                 .weight(1f),
-                            textStyle = MaterialTheme.typography.labelSmall.copy(lineHeight = 17.sp, textAlign = TextAlign.Start),
+                            textStyle = MaterialTheme.typography.labelSmall.copy(
+                                lineHeight = 17.sp,
+                                textAlign = TextAlign.Start
+                            ),
                             singleLine = false
                         )
                         Spacer(modifier = Modifier.width(10.dp))
@@ -169,7 +171,13 @@ fun ShowContent(
                     }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
-                FilledContentButton(name = "Buy Tickets")
+                if (isBought) {
+                    FilledContentButton(name = "Added To Tickets ")
+                } else {
+                    FilledContentButton(name = "Buy Tickets", navigate = {
+                        viewModel.buy()
+                    })
+                }
             }
         }
     }

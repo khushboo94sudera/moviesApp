@@ -88,7 +88,7 @@ fun MyNavigation() {
                     }
                 )
             ){
-                ShowContent(navigationCallback = { navController.popBackStack() })
+                ShowContent { navController.popBackStack() }
             }
             composable(route = "tickets") {
                 Tickets { navigationId ->
@@ -98,7 +98,7 @@ fun MyNavigation() {
             composable(
                 route = "show_ticket_details/{ticket_id}",
                 arguments = listOf(
-                    navArgument("navigationId") {
+                    navArgument("ticket_id") {
                         type = NavType.StringType
                     },
                 ),
@@ -106,10 +106,24 @@ fun MyNavigation() {
                 ShowTicketDetails(navigationCallBack = { navController.popBackStack() })
             }
             composable("search"){
-                SearchScreen()
+                SearchScreen{navigationId ->
+                    navController.navigate("search-category/$navigationId")
+                }
             }
-            composable("search-category"){
-                SearchCategory()
+            composable(
+                route = "search-category/{band_id}",
+                arguments = listOf(
+                    navArgument("band_id"){
+                        type = NavType.StringType
+                    }
+                )
+            ){
+                SearchCategory(
+                    navigationCallBack = {navigationId->
+                        navController.navigate("showContent/$navigationId") },
+                    navigationCallBackForIconBack = {navController.popBackStack()},
+
+                )
             }
             composable("profile"){
                 Profile()

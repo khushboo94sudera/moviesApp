@@ -22,7 +22,7 @@ data class MovieApiResponse(
         @SerialName("backdrop_path")
         val backdropPath: String = "",
         @SerialName("genre_ids")
-        val genreIds: List<Int> = listOf(),
+        val genreIds: List<String> = listOf(),
         @SerialName("id")
         val id: String,
         @SerialName("original_language")
