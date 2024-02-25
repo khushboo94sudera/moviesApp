@@ -61,7 +61,7 @@ fun IconBack(navigationCallback:()->Unit) {
 }
 
 @Composable
-fun OutlinedContentButton(name:String, navigate:()->Unit) {
+fun OutlinedContentButton(name:String, navigate:()->Unit = {}) {
     OutlinedButton(
         onClick = { navigate() },
         modifier = Modifier.fillMaxWidth(),
@@ -77,9 +77,9 @@ fun OutlinedContentButton(name:String, navigate:()->Unit) {
     }
 }
 @Composable
-fun OutlinedContentButtonWithIcon(name:String, icon:Int) {
+fun OutlinedContentButtonWithIcon(name:String, icon:Int, navigate: () -> Unit = {}) {
     OutlinedButton(
-        onClick = {},
+        onClick = {navigate()},
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 4.dp, color = Color(0xffA21313)),
@@ -119,9 +119,9 @@ fun FilledContentButton(name:String, navigate:()->Unit = {}) {
     }
 }
 @Composable
-fun FilledContentButtonWithIcon(name:String, icon:Int) {
+fun FilledContentButtonWithIcon(name:String, icon:Int, navigate:()->Unit = {}) {
     Button(
-        onClick = {},
+        onClick = {navigate()},
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),

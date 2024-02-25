@@ -1,4 +1,5 @@
-package com.example.myapplication.ui.log_in
+package com.example.myapplication.presentation.log_in
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,9 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
@@ -25,8 +28,22 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
 fun Login(
+    state: SignInState,
     navigateToMenu:()->Unit
 ) {
+
+    //error handling
+    val context = LocalContext.current
+    LaunchedEffect(key1 = state.signInError){
+        state.signInError?.let { error->
+            Toast.makeText(
+                context,
+                error,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -56,7 +73,8 @@ fun Login(
                 Spacer(modifier = Modifier.height(22.dp))
                 OutlinedContentButtonWithIcon(
                     name = "Sign in with Gmail",
-                    icon = R.drawable.logos_google_icon
+                    icon = R.drawable.logos_google_icon,
+                    navigate = navigateToMenu
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedContentButtonWithIcon(

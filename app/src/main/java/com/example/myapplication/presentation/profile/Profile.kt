@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.profile
+package com.example.myapplication.presentation.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -23,16 +24,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.presentation.log_in.UserData
+import com.example.myapplication.ui.reusable_content.FilledContentButton
 import com.example.myapplication.ui.reusable_content.FilledContentButtonWithIcon
 import com.example.myapplication.ui.reusable_content.HeadingText
 
 @Composable
-fun Profile() {
+fun Profile(
+    userData: UserData?,
+    onSignOut: () -> Unit
+) {
         Box(
             modifier = Modifier
                 //.padding(it)
@@ -48,7 +56,7 @@ fun Profile() {
                 Spacer(modifier = Modifier.height(60.dp))
                 HeadingText(name = "Profile")
                 Spacer(modifier = Modifier.height(24.dp))
-                ImageBox()
+                ImageBox(userData)
                 Spacer(modifier = Modifier.height(30.dp))
                 Divider(modifier = Modifier.height(2.dp), color = Color(0xffA3A3A3))
                 Spacer(modifier = Modifier.height(30.dp))
@@ -59,13 +67,15 @@ fun Profile() {
                 FilledContentButtonWithIcon(name = "Purchases history", icon = R.drawable.icon_5)
                 Spacer(modifier = Modifier.height(16.dp))
                 FilledContentButtonWithIcon(name = "User Terms of Service", icon = R.drawable.icon_6)
+                Spacer(modifier = Modifier.height(16.dp))
+                FilledContentButton(name = "Sign Out", navigate = { onSignOut() })
             }
         }
     }
 
 
 @Composable
-fun ImageBox() {
+fun ImageBox(userData: UserData?) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -79,18 +89,36 @@ fun ImageBox() {
                     shape = RoundedCornerShape(100)
                 )
         ){
-            Image(
+            if(userData?.profilePictureUrl != null) {
+                AsyncImage(
+                    model = userData.profilePictureUrl,
+                    contentDescription = "Profile picture",
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                            //.padding(20.dp),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            /*Image(
                 painter = painterResource(id = R.drawable.profile),
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.Center)
                     //.padding(20.dp),
-            )
+            )*/
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
+        if(userData?.userName != null) {
+            Text(
+                text = userData.userName,
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        /*Text(
             text = "Wellington Castro",
             style = MaterialTheme.typography.headlineSmall
-        )
+        )*/
     }
 }
