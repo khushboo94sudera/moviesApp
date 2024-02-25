@@ -94,8 +94,9 @@ fun ImageBox(userData: UserData?) {
                     model = userData.profilePictureUrl,
                     contentDescription = "Profile picture",
                     modifier = Modifier
-                        .align(Alignment.Center),
-                            //.padding(20.dp),
+                        .align(Alignment.Center)
+                        .size(210.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(16.dp))
