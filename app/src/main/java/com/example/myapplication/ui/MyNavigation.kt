@@ -202,7 +202,8 @@ fun MyNavigation(
 
                             navController.popBackStack()
                         }
-                    }
+                    },
+                    navigateToLogin = { navController.navigate("login") }
                 )
             }
 

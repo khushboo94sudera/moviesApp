@@ -39,11 +39,11 @@ import com.example.myapplication.ui.reusable_content.HeadingText
 @Composable
 fun Profile(
     userData: UserData?,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    navigateToLogin:()-> Unit
 ) {
         Box(
             modifier = Modifier
-                //.padding(it)
                 .fillMaxSize()
                 .background(color = Color.Black)
                 .verticalScroll(rememberScrollState())
@@ -68,12 +68,15 @@ fun Profile(
                 Spacer(modifier = Modifier.height(16.dp))
                 FilledContentButtonWithIcon(name = "User Terms of Service", icon = R.drawable.icon_6)
                 Spacer(modifier = Modifier.height(16.dp))
-                FilledContentButton(name = "Sign Out", navigate = { onSignOut() })
+                if (userData?.userName == null){
+                    FilledContentButton(name = "Sign In", navigate = { navigateToLogin() })
+                }else{
+                    FilledContentButton(name = "Sign Out", navigate = { onSignOut() })
+                }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
-
-
 @Composable
 fun ImageBox(userData: UserData?) {
     Column(
@@ -101,15 +104,9 @@ fun ImageBox(userData: UserData?) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
-            /*Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    //.padding(20.dp),
-            )*/
         }
         Spacer(modifier = Modifier.height(8.dp))
+
         if(userData?.userName != null) {
             Text(
                 text = userData.userName,
@@ -117,9 +114,6 @@ fun ImageBox(userData: UserData?) {
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        /*Text(
-            text = "Wellington Castro",
-            style = MaterialTheme.typography.headlineSmall
-        )*/
+
     }
 }

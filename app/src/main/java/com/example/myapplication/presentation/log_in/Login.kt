@@ -72,7 +72,7 @@ fun Login(
                 HorizontalOrDivider(name = "Or")
                 Spacer(modifier = Modifier.height(22.dp))
                 OutlinedContentButtonWithIcon(
-                    name = "Sign in with Gmail",
+                    name = "Sign in with Google",
                     icon = R.drawable.logos_google_icon,
                     navigate = navigateToMenu
                 )
