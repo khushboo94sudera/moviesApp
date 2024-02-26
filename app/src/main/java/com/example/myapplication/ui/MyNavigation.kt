@@ -91,7 +91,7 @@ fun MyNavigation(
 
                 LaunchedEffect(key1 = Unit) {
                     if(googleAuthUiClient.getSignedInUser() != null) {
-                        navController.navigate("profile")
+                        navController.navigate("menu")
                     }
                 }
 

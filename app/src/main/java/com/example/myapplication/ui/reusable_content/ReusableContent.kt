@@ -108,7 +108,8 @@ fun FilledContentButton(name:String, navigate:()->Unit = {}) {
             .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
-        colors = ButtonDefaults.buttonColors(Color(0xffA21313))
+        colors = ButtonDefaults.buttonColors(Color(0xffA21313)),
+
     ){
         Text(
             text = name,

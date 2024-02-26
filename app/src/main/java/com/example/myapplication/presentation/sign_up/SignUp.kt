@@ -57,7 +57,7 @@ fun SignUp() {
                 Spacer(modifier = Modifier.height(8.dp))
                 TextBoxContent(name = "Enter your Password")
                 Spacer(modifier = Modifier.height(16.dp))
-                //FilledContentButton(name = "Register")
+                FilledContentButton(name = "Register")
                 Spacer(modifier = Modifier.height(22.dp))
                 HorizontalOrDivider(name = "Or")
                 Spacer(modifier = Modifier.height(22.dp))
