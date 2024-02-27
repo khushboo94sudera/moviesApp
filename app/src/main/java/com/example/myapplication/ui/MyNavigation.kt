@@ -75,6 +75,12 @@ fun MyNavigation(
             modifier = Modifier.padding(it),
             navController = navController,
             startDestination = "splashScreen"
+
+            /*if(googleAuthUiClient.getSignedInUser() != null){
+                "menu"
+            }else{
+                "splashScreen"
+            }*/
         ){
             composable("splashScreen"){
                 TitleSplashScreen(navController = navController)
