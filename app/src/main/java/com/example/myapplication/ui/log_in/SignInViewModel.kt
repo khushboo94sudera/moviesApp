@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.log_in
+package com.example.myapplication.ui.log_in
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

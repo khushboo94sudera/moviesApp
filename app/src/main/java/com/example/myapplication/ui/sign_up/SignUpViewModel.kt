@@ -1,8 +1,8 @@
-package com.example.myapplication.presentation.sign_up
+package com.example.myapplication.ui.sign_up
 
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.presentation.log_in.SignInResult
-import com.example.myapplication.presentation.log_in.SignInState
+import com.example.myapplication.ui.log_in.SignInResult
+import com.example.myapplication.ui.log_in.SignInState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

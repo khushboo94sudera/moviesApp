@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.presentation.log_in.GoogleAuthUiClient
+import com.example.myapplication.ui.log_in.GoogleAuthUiClient
 import com.example.myapplication.ui.MyNavigation
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.android.gms.auth.api.identity.Identity

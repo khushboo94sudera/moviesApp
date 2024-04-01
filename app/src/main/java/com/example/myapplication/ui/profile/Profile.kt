@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.profile
+package com.example.myapplication.ui.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.myapplication.R
-import com.example.myapplication.presentation.log_in.UserData
+import com.example.myapplication.ui.log_in.UserData
 import com.example.myapplication.ui.reusable_content.FilledContentButton
 import com.example.myapplication.ui.reusable_content.FilledContentButtonWithIcon
 import com.example.myapplication.ui.reusable_content.HeadingText

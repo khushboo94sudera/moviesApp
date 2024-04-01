@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.sign_up
+package com.example.myapplication.ui.sign_up
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.widget.Toast
@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.myapplication.R
-import com.example.myapplication.presentation.log_in.SignInState
+import com.example.myapplication.ui.log_in.SignInState
 import com.example.myapplication.ui.reusable_content.FilledContentButton
 import com.example.myapplication.ui.reusable_content.HeadingText
 import com.example.myapplication.ui.reusable_content.HorizontalOrDivider
