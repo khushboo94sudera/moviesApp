@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.myapplication.database.entities.MoviesEntity
@@ -103,7 +105,7 @@ fun OtherShowCard(movieList: List<MoviesEntity>, navigationCallback:(String)->Un
 fun CardContent(cardList: MoviesEntity, navigationCallback:(String)->Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .width( 148.dp)
             .clickable { navigationCallback(cardList.id) },
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.Black)
@@ -122,6 +124,8 @@ fun CardContent(cardList: MoviesEntity, navigationCallback:(String)->Unit) {
             Text(
                 text = cardList.title ?: "TITLE",
                 style = MaterialTheme.typography.titleMedium.copy(fontStyle = FontStyle.Italic),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
             )
 
