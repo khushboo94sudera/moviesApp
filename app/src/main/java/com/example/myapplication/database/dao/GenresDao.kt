@@ -14,4 +14,7 @@ interface GenresDao {
 
     @Query(value = "SELECT * FROM genresTable")
     fun flowGenres(): Flow<List<GenresEntity>>
+
+    @Query("SELECT * FROM genresTable WHERE id = :genresId")
+    suspend fun getGenresById(genresId: String): GenresEntity?
 }

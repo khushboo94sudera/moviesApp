@@ -15,7 +15,8 @@ class MoviesRepository(
     private val myApplicationApiClient: MyApplicationApiClient = MyApplicationApiClient(),
     private val moviesDao: MoviesDao,
     private val moviesByGenresDao: MoviesByGenresDao,
-    private val myTicketsDao: MyTicketsDao
+    private val myTicketsDao: MyTicketsDao,
+    private val genresDao: GenresDao
 ) {
     suspend fun getMoviesList(page: Int) {
         val response = myApplicationApiClient.getMovies(pageNumber = page)
@@ -49,6 +50,10 @@ class MoviesRepository(
 
     fun getMoviesByGenres(genresId: String): Flow<List<MoviesByGenresEntity>> {
         return moviesByGenresDao.getMoviesByGenresDao(genreId = genresId)
+    }
+
+    suspend fun getGenresById(genresId: String): GenresEntity? {
+        return genresDao.getGenresById(genresId)
     }
 
     suspend fun insertTicket(movieId: String):Boolean {

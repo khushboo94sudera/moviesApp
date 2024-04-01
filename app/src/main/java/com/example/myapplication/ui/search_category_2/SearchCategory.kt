@@ -48,6 +48,7 @@ fun SearchCategory(
     navigationCallBack:(String)-> Unit,
     navigationCallBackForIconBack:()->Unit
 ) {
+    val genreName by viewModel.genresNameState.collectAsState(null)
     val moviesList by viewModel.moviesListByIdState.collectAsState(emptyList())
     Scaffold {
         Box(
@@ -65,7 +66,7 @@ fun SearchCategory(
                 Row {
                     IconBack(navigationCallback = navigationCallBackForIconBack)
                     Spacer(modifier = Modifier.width(24.dp))
-                    HeadingText(name = "Rock")
+                    HeadingText(name = genreName?:"")
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 SubCategoryGrid(list = moviesList, navigationCallBack)
@@ -97,14 +98,6 @@ fun GridCardContent(gridCardList: MoviesByGenresEntity, navigationCallBack:(Stri
     ){
         Column {
 
-            /*Image(
-                painter = painterResource(id = gridCardList.movieImage),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .size(width = 148.dp, height = 164.dp)
-            )*/
             AsyncImage(
                 model =  "https://image.tmdb.org/t/p/w500/"+ gridCardList.posterPath,
                 contentDescription = null,

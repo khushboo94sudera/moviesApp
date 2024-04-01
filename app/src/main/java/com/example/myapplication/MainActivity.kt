@@ -19,9 +19,11 @@ import com.example.myapplication.presentation.log_in.GoogleAuthUiClient
 import com.example.myapplication.ui.MyNavigation
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
             context = applicationContext,

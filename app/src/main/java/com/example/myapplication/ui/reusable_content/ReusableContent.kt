@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
@@ -155,16 +156,18 @@ fun FilledContentButtonWithIcon(name:String, icon:Int, navigate:()->Unit = {}) {
 }
 
 @Composable
-fun TextBoxContent(name:String) {
+fun TextBoxContent(name:String, value:String = "", onValueChange:(String) -> Unit = {},
+                   visualTransformation: VisualTransformation = VisualTransformation.None ) {
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
+        value = value,
+        onValueChange = {onValueChange(it)},
         placeholder = {
             Text(
                 text = name,
                 style = MaterialTheme.typography.titleSmall
             )
         },
+        visualTransformation = visualTransformation,
         modifier = Modifier
             .fillMaxWidth()
             .border(
@@ -172,7 +175,11 @@ fun TextBoxContent(name:String) {
                 shape = RoundedCornerShape(6.dp)
             ),
         shape = RoundedCornerShape(6.dp),
-        colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Color(0xffA21313))
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = Color(0xffA21313),
+            focusedTextColor = Color(0xffA3A3A3),
+            unfocusedTextColor = Color(0xffA3A3A3)
+        )
 
     )
 }

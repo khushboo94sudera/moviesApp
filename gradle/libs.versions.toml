@@ -20,6 +20,8 @@ nav_version = "2.7.5"
 coil-compose = "2.5.0"
 foundation-desktop = "1.6.1"
 firebase-auth = "22.3.1"
+firebase-firestore = "24.10.2"
+firebase-storage = "20.3.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -53,6 +55,8 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version" }
 androidx-foundation-desktop = { group = "androidx.compose.foundation", name = "foundation-desktop", version.ref = "foundation-desktop" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebase-firestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase-storage" }
 
 
 [plugins]

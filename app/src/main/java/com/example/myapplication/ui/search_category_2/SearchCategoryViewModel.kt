@@ -18,11 +18,16 @@ class SearchCategoryViewModel(
     private val moviesRepository: MoviesRepository
 ):ViewModel() {
     val moviesListByIdState = MutableStateFlow<List<MoviesByGenresEntity>>(emptyList())
-
+    val genresNameState = MutableStateFlow<String?>(null)
     init {
         val genresId = savedStateHandle.get<String>("band_id")?: ""
+        val genresName = savedStateHandle.get<String>("band_name")?: ""
+        genresNameState.value = genresName
+
         fetchMoviesListById(genresId)
     }
+
+
 
     private fun fetchMoviesListById(genresId: String) {
         viewModelScope.launch {

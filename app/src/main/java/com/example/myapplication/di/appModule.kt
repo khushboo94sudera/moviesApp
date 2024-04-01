@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     single {
-        MoviesRepository(moviesDao = get(), myApplicationApiClient = get(), moviesByGenresDao = get(), myTicketsDao = get())
+        MoviesRepository(moviesDao = get(), myApplicationApiClient = get(), moviesByGenresDao = get(), myTicketsDao = get(), genresDao = get())
     }
     single {
         GenresRepository(genresDao = get(), myApplicationApiClient = get())

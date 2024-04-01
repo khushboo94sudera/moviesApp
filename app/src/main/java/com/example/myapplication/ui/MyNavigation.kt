@@ -33,6 +33,7 @@ import com.example.myapplication.ui.search_screen_1.SearchScreen
 import com.example.myapplication.ui.show.ShowContent
 import com.example.myapplication.ui.show_ticket_details.ShowTicketDetails
 import com.example.myapplication.presentation.sign_up.SignUp
+import com.example.myapplication.presentation.sign_up.SignUpViewModel
 import com.example.myapplication.ui.tickets.Tickets
 import com.example.myapplication.ui.title.TitleSplashScreen
 import kotlinx.coroutines.launch
@@ -94,13 +95,11 @@ fun MyNavigation(
             composable("login"){
                 val viewModel = viewModel<SignInViewModel>()
                 val state by viewModel.state.collectAsState()
-
                 LaunchedEffect(key1 = Unit) {
                     if(googleAuthUiClient.getSignedInUser() != null) {
                         navController.navigate("menu")
                     }
                 }
-
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartIntentSenderForResult(),
                     onResult = {result->
@@ -129,7 +128,61 @@ fun MyNavigation(
 
                 Login(
                     state = state,
+                    googleNavigationToMenu = {
+                        lifecycleScope.launch {
+                            val signInIntentSender = googleAuthUiClient.signIn()
+                            launcher.launch(
+                                IntentSenderRequest.Builder(
+                                    signInIntentSender ?: return@launch
+                                ).build()
+                            )
+                        }
+                    },
+                    navigateToMenu = {navController.navigate("menu")},
+                    navigateToSignUp = {navController.navigate("signup")}
+                )
+            }
+            composable("signup"){
+                val viewModel = viewModel<SignUpViewModel>()
+                val state by viewModel.state.collectAsState()
+                LaunchedEffect(key1 = Unit) {
+                    if(googleAuthUiClient.getSignedInUser() != null) {
+                        navController.navigate("menu")
+                    }
+                }
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.StartIntentSenderForResult(),
+                    onResult = {result->
+                        if (result.resultCode == RESULT_OK){
+                            lifecycleScope.launch {
+                                val signUpResult = googleAuthUiClient.signInWithIntent(
+                                    intent = result.data ?: return@launch
+                                )
+                                viewModel.onSignInResult(signUpResult)
+                            }
+                        }
+                    }
+                )
+                LaunchedEffect(key1 = state.isSignInSuccessful) {
+                    if(state.isSignInSuccessful) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Sign in successful",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        navController.navigate("menu")
+                        viewModel.resetState()
+                    }
+                }
+                SignUp(
+                    navigateToLogin = {navController.navigate("login")},
                     navigateToMenu = {
+                        navController.navigate("menu"){
+                            popUpTo(0)
+                        }
+                    },
+                    googleNavigationToMenu = {
                         lifecycleScope.launch {
                             val signInIntentSender = googleAuthUiClient.signIn()
                             launcher.launch(
@@ -140,9 +193,6 @@ fun MyNavigation(
                         }
                     }
                 )
-            }
-            composable("signup"){
-                SignUp()
             }
             composable("menu"){
                 MenuMain{navigationId->
@@ -175,14 +225,16 @@ fun MyNavigation(
                 ShowTicketDetails(navigationCallBack = { navController.popBackStack() })
             }
             composable("search"){
-                SearchScreen{navigationId ->
-                    navController.navigate("search-category/$navigationId")
+                SearchScreen{navigationId, navigationName  ->
+                    navController.navigate("search-category/$navigationId/name/$navigationName")
                 }
             }
             composable(
-                route = "search-category/{band_id}",
+                route = "search-category/{band_id}/name/{band_name}",
                 arguments = listOf(
                     navArgument("band_id"){
+                        type = NavType.StringType
+                    },navArgument("band_name"){
                         type = NavType.StringType
                     }
                 )

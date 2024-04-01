@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import com.example.myapplication.database.entities.GenresEntity
-import com.example.myapplication.database.entities.SearchBandCategories
 import com.example.myapplication.ui.reusable_content.HeadingText
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import org.koin.androidx.compose.koinViewModel
@@ -52,14 +50,25 @@ import java.util.UUID
 @Composable
 fun SearchScreen(
     viewModel: SearchScreenViewModel = koinViewModel(),
-    navigationCallBack:(String)->Unit
+    navigationCallBack:(String, String)->Unit
 ) {
     val bands by viewModel.genres.collectAsState(emptyList())
-    SearchScreenWithState(bands = bands, navigationCallBack = navigationCallBack)
+    var searchText by remember { mutableStateOf("") }
+    SearchScreenWithState(
+        bands = bands,
+        searchText = searchText,
+        onSearch = {searchText = it},
+        navigationCallBack = navigationCallBack
+    )
 }
 
 @Composable
-private fun SearchScreenWithState(bands: List<GenresEntity>,navigationCallBack: (String) -> Unit) {
+private fun SearchScreenWithState(
+    bands: List<GenresEntity>,
+    searchText:String,
+    onSearch:(String)->Unit,
+    navigationCallBack: (String, String) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,16 +82,27 @@ private fun SearchScreenWithState(bands: List<GenresEntity>,navigationCallBack: 
             Spacer(modifier = Modifier.height(60.dp))
             HeadingText(name = "Search")
             Spacer(modifier = Modifier.height(24.dp))
-            MySearchBar()
+            MySearchBar(
+                searchText = searchText,
+                onSearch = onSearch
+            )
             Spacer(modifier = Modifier.height(40.dp))
-            LazySearchCategories(bandList = bands, navigationCallBack = navigationCallBack)
+            LazySearchCategories(
+                bandList = bands.filter {
+                    it.name?.contains(searchText, ignoreCase = true) == true
+                },
+                navigationCallBack = navigationCallBack
+            )
         }
     }
 }
 
 
 @Composable
-fun LazySearchCategories(bandList: List<GenresEntity>, navigationCallBack:(String)->Unit) {
+fun LazySearchCategories(
+    bandList: List<GenresEntity>,
+    navigationCallBack:(String, String)->Unit
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = 24.dp),
         contentPadding = PaddingValues(0.dp)
@@ -94,9 +114,9 @@ fun LazySearchCategories(bandList: List<GenresEntity>, navigationCallBack:(Strin
 }
 
 @Composable
-fun CategoryCard(bandList: GenresEntity, navigationCallBack:(String)->Unit) {
+fun CategoryCard(bandList: GenresEntity, navigationCallBack:(String, String)->Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = {navigationCallBack(bandList.id)}),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = {navigationCallBack(bandList.id, bandList.name?:"")}),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ) {
@@ -139,13 +159,10 @@ fun CategoryCard(bandList: GenresEntity, navigationCallBack:(String)->Unit) {
 @Composable
 fun MySearchBar(
     modifier: Modifier = Modifier,
-    searchIcon: Int = R.drawable.vector__5_,
-    onSearch: (String) -> Unit = {}
+    searchText: String,
+    onSearch: (String) -> Unit
 ) {
-
-    var searchText by remember { mutableStateOf("") }
-
-    Row(
+    Box(
         modifier = modifier
             .height(40.dp)
             .fillMaxWidth()
@@ -154,40 +171,40 @@ fun MySearchBar(
                     width = 1.dp, color = Color(0xffA21313)
                 ), shape = RoundedCornerShape(8.dp)
             ),
-        verticalAlignment = Alignment.CenterVertically
+
     ) {
         Spacer(modifier = Modifier.width(6.dp))
         Image(
-            painter = painterResource(id = searchIcon),
+            painter = painterResource(id = R.drawable.vector__5_),
             contentDescription = null,
-        )
-        BasicTextField(
-            value = searchText,
-            onValueChange = { searchText = it },
-            singleLine = true,
-            textStyle = TextStyle(color = Color.Black),
             modifier = Modifier
-                .padding(start = 8.dp)
-                .weight(1f),
-            decorationBox = { innerTextField ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(end = 8.dp),
-                    contentAlignment = Alignment.CenterStart,
-                ) {
-                    Text(
-                        text = "Artists, Bands or Venues",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xff5E606A)
-                    )
-                }
-            }
+                .padding(start = 12.dp)
+                .align(Alignment.CenterStart)
         )
+            BasicTextField(
+                value = searchText,
+                onValueChange = { onSearch(it) },
+                singleLine = true,
+                textStyle = TextStyle(color = Color.White),
+                modifier = Modifier
+                    .padding(start = 40.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+            )
+        if(searchText.isEmpty()){
+                Text(
+                    text = "Artists, Bands or Venues",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color(0xff5E606A),
+                    modifier = Modifier
+                        .padding(start = 40.dp)
+                        .align(Alignment.CenterStart)
+                )
+        }
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun PreviewSearchScreen() {
     MyApplicationTheme {
@@ -200,8 +217,9 @@ fun PreviewSearchScreen() {
                     UUID.randomUUID().toString(),
                     UUID.randomUUID().toString()
                 )
-            ),
-            navigationCallBack = {}
-        )
+            )
+        ) { _, _ ->
+
+        }
     }
-}
+}*/
