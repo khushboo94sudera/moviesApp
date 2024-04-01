@@ -26,7 +26,7 @@ import kotlinx.coroutines.delay
 fun TitleSplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(2000) // Simulate a 2-second delay for the splash screen
-        navController.navigate("mainScreen")
+        navController.navigate("login")
     }
 
         Box(

@@ -99,11 +99,18 @@ fun Login(
                     name = "Enter your Password",
                     value = password,
                     onValueChange = {password = it},
-                    //visualTransformation = PasswordVisualTransformation()
+                    visualTransformation = PasswordVisualTransformation()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = {
+                    onClick ={
+                    if(email.isEmpty() || password.isEmpty() ){
+                        Toast.makeText(
+                            context,
+                            "Enter your email and password",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
                         auth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
@@ -116,7 +123,8 @@ fun Login(
                                     ).show()
                                 }
                             }
-                    },
+                    }
+                             },
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
