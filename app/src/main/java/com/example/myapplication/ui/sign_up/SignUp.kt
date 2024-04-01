@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.sign_up
 import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -48,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.myapplication.R
@@ -62,12 +64,14 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 
+
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun SignUp(
     navigateToLogin:()->Unit,
     navigateToMenu:()->Unit,
-    googleNavigationToMenu:()->Unit
+    googleNavigationToMenu:()->Unit,
+    context: Context = LocalContext.current
 ) {
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }

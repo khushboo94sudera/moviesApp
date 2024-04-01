@@ -40,7 +40,8 @@ import com.example.myapplication.ui.reusable_content.HeadingText
 fun Profile(
     userData: UserData?,
     onSignOut: () -> Unit,
-    navigateToLogin:()-> Unit
+    navigateToLogin:()-> Unit,
+    navigateToEditProfile:()-> Unit
 ) {
         Box(
             modifier = Modifier
@@ -60,7 +61,7 @@ fun Profile(
                 Spacer(modifier = Modifier.height(30.dp))
                 Divider(modifier = Modifier.height(2.dp), color = Color(0xffA3A3A3))
                 Spacer(modifier = Modifier.height(30.dp))
-                FilledContentButtonWithIcon(name = "Edit profile", icon = R.drawable.icon_3)
+                FilledContentButtonWithIcon(name = "Edit profile", icon = R.drawable.icon_3, navigate = { navigateToEditProfile() })
                 Spacer(modifier = Modifier.height(16.dp))
                 FilledContentButtonWithIcon(name = "Payment options", icon = R.drawable.icon_4)
                 Spacer(modifier = Modifier.height(16.dp))

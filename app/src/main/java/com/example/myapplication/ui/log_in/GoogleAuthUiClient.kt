@@ -37,12 +37,16 @@ class GoogleAuthUiClient(
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken,null)
         return try {
-            val user = auth.signInWithCredential(googleCredentials).await().user
+            val userCredential = auth.signInWithCredential(googleCredentials).await()
+            val user = userCredential.user
+            val userEmail = user?.email // Fetch user email
+            //val user = auth.signInWithCredential(googleCredentials).await().user
             SignInResult(
                 data = user?.run {
                     UserData(
                         userId = uid,
                         userName = displayName,
+                        userEmail = userEmail, // Assign user email to UserData
                         profilePictureUrl = photoUrl.toString()
                     )
                 },
@@ -71,6 +75,7 @@ class GoogleAuthUiClient(
         UserData(
             userId = uid,
             userName = displayName,
+            userEmail = email, // Fetch user email
             profilePictureUrl = photoUrl.toString()
         )
     }

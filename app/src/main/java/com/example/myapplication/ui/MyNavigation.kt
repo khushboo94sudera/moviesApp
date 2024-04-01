@@ -1,7 +1,9 @@
 package com.example.myapplication.ui
 
 import android.app.Activity.RESULT_OK
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -21,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navOptions
+import com.example.myapplication.ui.edit_profile.EditProfile
 import com.example.myapplication.ui.log_in.GoogleAuthUiClient
 import com.example.myapplication.ui.enter_screen.EnterScreen
 import com.example.myapplication.ui.log_in.Login
@@ -36,6 +39,8 @@ import com.example.myapplication.ui.sign_up.SignUp
 import com.example.myapplication.ui.sign_up.SignUpViewModel
 import com.example.myapplication.ui.tickets.Tickets
 import com.example.myapplication.ui.title.TitleSplashScreen
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.launch
 
 
@@ -261,11 +266,49 @@ fun MyNavigation(
                             navController.popBackStack()
                         }
                     },
-                    navigateToLogin = { navController.navigate("login") }
+                    navigateToLogin = { navController.navigate("login") },
+                    navigateToEditProfile = { navController.navigate("editProfile")}
                 )
+            }
+            composable("editProfile"){
+                EditProfile(
+                    userData = googleAuthUiClient.getSignedInUser(),
+                    navigateToProfile = { userName, email->
+                        updateProfileInFirebase(userName, email)
+                        navController.navigate("profile")
+                                        },
+
+                ) { navController.popBackStack() }
             }
 
         }
     }
 
+}
+private fun updateProfileInFirebase(fullName: String, newEmail: String) {
+    val user = FirebaseAuth.getInstance().currentUser
+
+    user?.updateEmail(newEmail)
+        ?.addOnCompleteListener { emailUpdateTask ->
+            if (emailUpdateTask.isSuccessful) {
+                // Once email is updated, update display name
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(fullName)
+                    .build()
+
+                user.updateProfile(profileUpdates)
+                    .addOnCompleteListener { profileUpdateTask ->
+                        if (profileUpdateTask.isSuccessful) {
+                            // Profile updated successfully
+                            Log.d(TAG, "User profile updated.")
+                        } else {
+                            // Handle error updating profile
+                            Log.e(TAG, "Error updating user profile.", profileUpdateTask.exception)
+                        }
+                    }
+            } else {
+                // Handle error updating email
+                Log.e(TAG, "Error updating user email.", emailUpdateTask.exception)
+            }
+        }
 }
